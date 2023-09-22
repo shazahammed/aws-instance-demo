@@ -18,18 +18,20 @@ func main() {
 }
 
 func receiveIoTData(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		body, err := io.ReadAll(r.Body)
-		if err != nil {
-			http.Error(w, "Error reading request body", http.StatusInternalServerError)
-			return
+	for {
+		if r.Method == http.MethodPost {
+			body, err := io.ReadAll(r.Body)
+			if err != nil {
+				http.Error(w, "Error reading request body", http.StatusInternalServerError)
+				return
+			}
+
+			fmt.Println("Received IoT data:", string(body))
+
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("Data received successfully"))
+		} else {
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		}
-
-		fmt.Println("Received IoT data:", string(body))
-
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Data received successfully"))
-	} else {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 	}
 }
