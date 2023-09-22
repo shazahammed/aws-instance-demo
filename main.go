@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 )
 
 func main() {
 	http.HandleFunc("/receive-iot-data", receiveIoTData)
 
-	port := 8443 
+	port := 8080 
 	addr := fmt.Sprintf(":%d", port)
 	fmt.Printf("Listening on port %d...\n", port)
 	if err := http.ListenAndServe(addr, nil); err != nil {
@@ -34,4 +35,5 @@ func receiveIoTData(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		}
 	}
+	time.Sleep(2 * time.Second)
 }
