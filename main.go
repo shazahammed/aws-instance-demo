@@ -10,7 +10,7 @@ import (
 func main() {
 	http.HandleFunc("/receive-iot-data", receiveIoTData)
 
-	port := 8080 
+	port := 8443
 	addr := fmt.Sprintf(":%d", port)
 	fmt.Printf("Listening on port %d...\n", port)
 	if err := http.ListenAndServe(addr, nil); err != nil {
@@ -19,7 +19,7 @@ func main() {
 }
 
 func receiveIoTData(w http.ResponseWriter, r *http.Request) {
-	for {
+	
 		if r.Method == http.MethodPost {
 			body, err := io.ReadAll(r.Body)
 			if err != nil {
@@ -34,6 +34,5 @@ func receiveIoTData(w http.ResponseWriter, r *http.Request) {
 		} else {
 			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		}
-	}
-	time.Sleep(2 * time.Second)
+	
 }
